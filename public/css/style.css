@@ -1,0 +1,95 @@
+body{
+    text-align: center;
+}
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers items horizontally */
+    gap: 20px; /* Adds spacing between cards */
+    padding: 20px;
+}
+
+.fa-compass{
+  color: hsl(16, 100%, 50%);
+}
+
+.f-info-links a{
+    text-decoration: none;
+    color: #222222;
+    
+}
+
+.f-info{
+    text-align: center;
+    background-color: #ebebeb;
+}
+.f-info-social{
+    margin-right: 10px;
+    font-size: 20px;
+
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+
+.card{
+   border: none!important;
+   margin-bottom: 2rem;
+   width: 20rem;
+   ;
+}
+.card-img-top{
+    border-radius: 1rem;
+    width: 100% !important;
+    object-fit: cover !important;
+    height: 15rem;
+
+}
+.card-body{
+    padding: 0 !important;
+}
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+.add-btn{
+    color: hsl(16, 100%, 50%);
+}
+
+.container {
+    min-height: 100vh; /* Center content vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.listing-card {
+    width: 50%; /* Adjust card width */
+    max-width: 600px; /* Limit max width */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.show-image {
+    width: 100%; /* Ensure image fills the card */
+    height: 300px; /* Set fixed height for all images */
+    object-fit: cover; /* Ensures images maintain aspect ratio */
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+button {
+    width: 100%;
+}
