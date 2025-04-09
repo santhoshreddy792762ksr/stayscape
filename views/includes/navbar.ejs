@@ -1,0 +1,106 @@
+<style>
+   
+/* Search Form Container */
+.search-form {
+  align-items: center;
+  gap: 8px;
+}
+
+/* Input Field Styling */
+.search-input {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 24px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-width: 180px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+/* Search Button Styling */
+.btn-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-search:hover {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+}
+
+.btn-search:active {
+  transform: translateY(0);
+}
+
+/* Search Icon */
+.btn-search i {
+  font-size: 14px;
+}
+
+/* Search Text */
+.search-text {
+  display: inline-block;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .search-text {
+    display: none;
+  }
+  
+  .btn-search {
+    padding: 8px 12px;
+  }
+  
+  .search-input {
+    min-width: 140px;
+  }
+}
+
+</style>
+
+<nav class="navbar navbar-expand-sm bg-body-tertiary border-bottom sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <b><a class="nav-link" href="/listings">Explore Stays</a></b> 
+        </div>
+        <div class="navbar-nav ms-auto">
+          <form class="d-flex search-form" role="search">
+            <input class="form-control search-input me-2" type="search" placeholder="Search..." aria-label="Search">
+            <button class="btn btn-search" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span class="search-text">Search</span>
+            </button>
+          </form>
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+          <b><a class="nav-link" href="/listings/new">Host a Stay</a></b>
+          <%if(!currUser){%>
+          <b><a class="nav-link active" aria-current="page" href="/signup">Signup</a></b>
+          <b><a class="nav-link" href="/login">Login</a></b>
+          <%}%> <% if(currUser){%>
+          <b><a class="nav-link" href="/logout">Logout</a></b>
+          <%}%>
+        </div>
+      </div>
+    </div>
+  </nav>
