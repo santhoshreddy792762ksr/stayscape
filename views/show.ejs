@@ -1,0 +1,346 @@
+<% layout("/layouts/boilerplate")%>
+
+<div class="container-fluid px-0">
+    <!-- Hero Section -->
+    <div class="listing-hero text-white text-center py-5" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<%= listing.image.url %>'); background-size: cover; background-position: center;">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3"><%= listing.title %></h1>
+            <div class="d-flex justify-content-center align-items-center">
+                <span class="badge bg-warning text-dark fs-5 me-3">₹<%= listing.price %> /night</span>
+                <span class="text-light"><i class="fas fa-map-marker-alt me-2"></i><%= listing.location %>, <%= listing.country %></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <!-- Success Message -->
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success alert-dismissible fade show text-center mb-5 mx-auto" style="max-width: 600px; border-radius: 50px;">
+                <i class="fas fa-check-circle me-2"></i>Review submitted successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
+
+        <!-- Vertical Listing Card -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg">
+                    <!-- Image at Top -->
+                    <img src="<%= listing.image.url %>" class="card-img-top" style="height: 300px; object-fit: cover;" alt="listing_image">
+                    
+                    <!-- Card Body -->
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="mb-4"><%= listing.title %></h2>
+                        
+                        <!-- Price Badge -->
+                        <div class="mb-4">
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary py-2 px-3 fs-5">
+                                ₹<%= listing.price %> /night
+                            </span>
+                        </div>
+                        
+                        <!-- Description -->
+                         <p>owned by <i><%=listing.owner.username%></i></p>
+                        <p class="mb-4"><%= listing.description %></p>
+                        
+                        <!-- Location -->
+                        <div class="d-flex align-items-center mb-4">
+                            <i class="fas fa-map-marker-alt text-danger me-3 fs-4"></i>
+                            <div>
+                                <h5 class="mb-1">Location</h5>
+                                <p class="mb-0"><%= listing.location %>, <%= listing.country %></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                         <%if(currUser && currUser._id.equals(listing.owner._id)) {%>
+                        <div class="d-flex flex-wrap gap-3 mt-5">
+                            <a href="/listings/<%= listing._id%>/edit" class="btn btn-primary px-4 py-2 rounded-pill flex-grow-1">
+                                <i class="fas fa-edit me-2"></i>Edit Listing
+                            </a>
+                            <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE" class="flex-grow-1">
+                                <button class="btn btn-outline-danger px-4 py-2 rounded-pill w-100">
+                                    <i class="fas fa-trash-alt me-2"></i>Delete
+                                </button>
+                            </form>
+                        </div>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Form -->
+         <%if(currUser && currUser._id.equals(listing.owner._id)){%>
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <h2 class="mb-3">Leave a Review</h2>
+                            <div class="divider mx-auto bg-primary"></div>
+                        </div>
+                        
+                        <form action="/listings/<%=listing._id%>/reviews" method="POST" novalidation class="needs-validation">
+                            <!-- Rating -->
+                            <div class="mb-4 text-center">
+                                <label class="form-label fw-bold mb-3 d-block fs-5">Rating: <span id="ratingValue" class="text-warning">3</span>/5</label>
+                                <div class="d-flex justify-content-center mb-3">
+                                    <div class="star-rating">
+                                        <% for(let i = 1; i <= 5; i++) { %>
+                                            <i class="fas fa-star rating-star <%= i <= 3 ? 'text-warning' : 'text-secondary' %>" data-value="<%= i %>"></i>
+                                        <% } %>
+                                        <input type="hidden" name="review[rating]" id="ratingInput" value="3">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Comments -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-block mb-3 fs-5">Your Review</label>
+                                <textarea class="form-control shadow-none" name="review[content]" rows="5" style="min-height: 150px;" required placeholder="Share your experience..."></textarea>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Review
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <!-- Reviews Section -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="text-center mb-5">
+                    <span class="section-title px-4">Guest Reviews</span>
+                </h3>
+                
+                <% if (listing.reviews.length > 0) { %>
+                    <div class="row gy-4">
+                        <% listing.reviews.forEach(review => { %>
+                            <div class="col-12">
+                                <div class="review-card p-4 p-md-5">
+                                    <div class="review-header mb-4">
+                                        <div class="reviewer-avatar bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3">
+                                            <i class="fas fa-user fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="reviewer-name mb-1"><%review.author.username%></h4>
+                                            <div class="star-display">
+                                                <% for(let i = 1; i <= 5; i++) { %>
+                                                    <i class="fas fa-star <%= i <= review.rating ? 'text-warning' : 'text-secondary' %>"></i>
+                                                <% } %>
+                                                <span class="rating-text ms-2"><%= review.rating %> STAR RATING</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <% if (review.content && review.content.trim() !== '') { %>
+                                        <div class="review-content">
+                                            <p class="mb-0">"<%= review.content %>"</p>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="text-center py-5">
+                        <i class="far fa-comment-dots text-muted fa-4x mb-4"></i>
+                        <h4 class="text-muted mb-3">No Reviews Yet</h4>
+                        <p class="text-muted">Be the first to share your experience!</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Hero Section */
+    .listing-hero {
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    
+    /* Divider */
+    .divider {
+        width: 80px;
+        height: 4px;
+        border-radius: 2px;
+    }
+    
+    /* Section Title */
+    .section-title {
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+    }
+    
+    .section-title:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #dee2e6;
+        z-index: -1;
+    }
+    
+    /* Listing Card */
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    /* Star Rating */
+    .star-rating {
+        font-size: 2rem;
+    }
+    
+    .star-rating .rating-star {
+        cursor: pointer;
+        transition: all 0.2s;
+        margin: 0 5px;
+    }
+    
+    /* Review Card */
+    .review-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .review-header {
+        display: flex;
+        align-items: center;
+    }
+    
+    .reviewer-avatar {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .reviewer-name {
+        color: #2c3e50;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    
+    .star-display {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+    
+    .rating-text {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        font-weight: 500;
+        vertical-align: middle;
+    }
+    
+    .review-content {
+        font-size: 1.1rem;
+        color: #34495e;
+        line-height: 1.7;
+        padding-left: 15px;
+        border-left: 3px solid #dee2e6;
+        margin-left: 30px;
+    }
+    
+    /* Buttons */
+    .btn-primary {
+        background-color: #4361ee;
+        border-color: #4361ee;
+        transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3a56d4;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-outline-danger {
+        border-width: 2px;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .listing-hero {
+            min-height: 300px;
+        }
+        
+        .review-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .reviewer-avatar {
+            margin-bottom: 15px;
+            margin-right: 0;
+        }
+        
+        .review-content {
+            margin-left: 0;
+            padding-left: 0;
+            border-left: none;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    // Star Rating Interaction
+    document.querySelectorAll('.rating-star').forEach(star => {
+        star.addEventListener('click', function() {
+            const value = this.getAttribute('data-value');
+            document.getElementById('ratingInput').value = value;
+            document.getElementById('ratingValue').textContent = value;
+            
+            // Update all stars
+            document.querySelectorAll('.rating-star').forEach((s, index) => {
+                if (index < value) {
+                    s.classList.add('text-warning');
+                    s.classList.remove('text-secondary');
+                } else {
+                    s.classList.add('text-secondary');
+                    s.classList.remove('text-warning');
+                }
+            });
+        });
+    });
+
+    // Remove success parameter from URL
+    if (window.location.search.includes('success=true')) {
+        const url = new URL(window.location);
+        url.searchParams.delete('success');
+        window.history.replaceState({}, '', url);
+    }
+</script>

@@ -1,0 +1,86 @@
+<% layout("/layouts/boilerplate")%>
+<%= success %>
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .filter{
+    text-align: center;
+    margin-top: 2rem;
+    margin-right: 2rem;
+    opacity: 0.7;
+
+  }
+  .filter:hover{
+    opacity: 1;
+    cursor: pointer;
+  }
+</style>
+<body>
+  <div>
+     <div id="filters">
+      <div class="filter">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>trending</p>
+      </div>
+     
+      <div class="filter">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>rooms</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic Cities</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountains</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-chess-rook"></i></div>
+        <p>Castles</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>amazing Pools</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-campground"></i></div>
+        <p>camping</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-cow"></i></div>
+        <p>Farms</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-snowflake"></i></div>
+        <p>Arctic</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-basket-shopping"></i></div>
+        <p>shopping</p>
+      </div>
+     </div>
+</div>
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+    <%for(let listing of allListings){%>
+            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+        <div class="card  col" >
+            <img src="<%= listing.image.url %>" class="card-img-top" alt="listind_image"/>
+            <div class="card-body">
+              <p class="card-text">
+                <div class="card-img-overlay"></div>
+               <b><%= listing.title %> </b> <br>
+                <%= listing.price %>/only <br>
+                <%= listing.description %> <br>
+              </p>
+            </div>
+          </div>
+        </a>
+    <%}%>
+
+      </div>
+
+</body>
+

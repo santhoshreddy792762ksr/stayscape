@@ -1,0 +1,88 @@
+<% layout("/layouts/boilerplate")%>
+<div class="row">
+    <div class="col-15">
+        <h3>edit your listing here</h3><br>
+        
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success" role="alert">
+                Listing updated successfully!
+            </div>
+        <% } %>
+        
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger" role="alert">
+                Failed to update listing: <%= error %>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
+            <div class="mb-3">
+                <b><label for="title" class="form-label">title</label></b>
+                <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required style="width: 500px; max-width: 100%">
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please provide a title</div>
+            </div>
+
+            <div class="mb-3">
+                <b><label for="description" class="form-label">description</label></b>
+                <textarea name="listing[description]" class="form-control" required style="width: 500px; min-height: 150px; max-width: 100%"><%= listing.description %></textarea>
+                <div class="valid-feedback">Description looks good</div>
+                <div class="invalid-feedback">Please provide a description</div>
+            </div>
+
+            <div class="mb-3">
+                <b><label for="image" class="form-label">image url</label></b>
+                <input name="listing[image]" value="<%= listing.image %>" type="url" class="form-control" style="width: 500px; max-width: 100%">
+                <div class="valid-feedback">Image URL looks valid</div>
+                <div class="invalid-feedback">Please provide a valid image URL</div>
+            </div>
+
+            <div class="mb-3">
+                <b><label for="price" class="form-label">price</label></b>
+                <input name="listing[price]" value="<%= listing.price %>" type="number" min="1" class="form-control" required style="width: 500px; max-width: 100%">
+                <div class="valid-feedback">Price looks good</div>
+                <div class="invalid-feedback">Please provide a valid price (minimum $1)</div>
+            </div>
+               
+            <div class="mb-3">
+                <b><label for="country" class="form-label">country</label></b>
+                <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required style="width: 500px; max-width: 100%">
+                <div class="valid-feedback">Country looks good</div>
+                <div class="invalid-feedback">Please provide a country</div>
+            </div>
+            
+            <div class="mb-3">
+                <b><label for="location" class="form-label">location</label></b>
+                <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required style="width: 500px; max-width: 100%">
+                <div class="valid-feedback">Location looks good</div>
+                <div class="invalid-feedback">Please provide a location</div>
+            </div>
+            <br>
+
+            <div class="d-flex gap-3">
+                <button class="btn btn-dark">update</button>
+                <a href="/listings/<%= listing._id %>" class="btn btn-light" style="background-color: #ffcccc; border-color: #ff9999; color: #333;">cancel</a>
+            </div>
+            <br>
+        </form>
+    </div>
+</div>
+
+<script>
+// Client-side validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>

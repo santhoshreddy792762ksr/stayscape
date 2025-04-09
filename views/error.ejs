@@ -1,0 +1,34 @@
+<%= layout("/layouts/boilerplate")%>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="alert alert-danger col-md-8 mx-auto p-4" role="alert" style="max-width: 800px;">
+    <div class="d-flex">
+      <svg class="bi flex-shrink-0 me-3 mt-1" role="img" aria-label="Danger:" style="width: 24px; height: 24px;">
+        <use xlink:href="#exclamation-triangle-fill"/>
+      </svg>
+      <div class="w-100">
+        <h4 class="alert-heading mb-3">Validation Error</h4>
+        
+        <!-- Formatted Validation Errors -->
+        <div class="mb-4 p-3 bg-light rounded">
+          <h5 class="text-danger mb-3">Missing required fields:</h5>
+          <ul class="mb-0">
+            <% if(err.message.includes('description')) { %>
+              <li>Description is required</li>
+            <% } %>
+            <% if(err.message.includes('title')) { %>
+              <li>Title is required</li>
+            <% } %>
+          </ul>
+        </div>
+
+        <!-- Technical Details (Collapsible) -->
+        <details>
+          <summary class="text-muted small mb-2">Technical details</summary>
+          <div class="bg-dark text-white p-3 rounded small font-monospace" style="overflow-x: auto;">
+            <pre class="mb-0"><%= err.stack %></pre>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>

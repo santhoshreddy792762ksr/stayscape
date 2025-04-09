@@ -1,0 +1,142 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Host A stay</h2>
+    
+    <% if (typeof error !== 'undefined' && error.length) { %>
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+    <form action="/listings" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <!-- Title -->
+        <div class="mb-3">
+            <label for="title" class="form-label">Title*</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="title" 
+                name="title" 
+                value="<%= typeof locals.title !== 'undefined' ? locals.title : '' %>"
+                required
+            >
+            <div class="invalid-feedback">
+                Please provide a title for your listing.
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description*</label>
+            <textarea 
+                class="form-control" 
+                id="description" 
+                name="description" 
+                rows="5" 
+                required
+            ><%= typeof locals.description !== 'undefined' ? locals.description : '' %></textarea>
+            <div class="invalid-feedback">
+                Please provide a description.
+            </div>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+            <label for="price" class="form-label">Price*</label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input 
+                    type="number" 
+                    class="form-control" 
+                    id="price" 
+                    name="price" 
+                    min="0" 
+                    step="0.01"
+                    value="<%= typeof locals.price !== 'undefined' ? locals.price : '' %>"
+                    required
+                >
+                <div class="invalid-feedback">
+                    Please provide a valid price.
+                </div>
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+            <label for="location" class="form-label">Location*</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="location" 
+                name="location" 
+                value="<%= typeof locals.location !== 'undefined' ? locals.location : '' %>"
+                required
+            >
+            <div class="invalid-feedback">
+                Please provide a location.
+            </div>
+        </div>
+
+        <!-- Country -->
+        <div class="mb-3">
+            <label for="country" class="form-label">Country*</label>
+            <select 
+                class="form-select" 
+                id="country" 
+                name="country" 
+                required
+            >
+                <option value="">Select a country</option>
+                <option value="USA" <%= typeof locals.country !== 'undefined' && locals.country === 'USA' ? 'selected' : '' %>>United States</option>
+                <option value="UK" <%= typeof locals.country !== 'undefined' && locals.country === 'UK' ? 'selected' : '' %>>United Kingdom</option>
+                <option value="Canada" <%= typeof locals.country !== 'undefined' && locals.country === 'Canada' ? 'selected' : '' %>>Canada</option>
+                <!-- Add more countries as needed -->
+            </select>
+            <div class="invalid-feedback">
+                Please select a country.
+            </div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="mb-4">
+            <label for="images" class="form-label">Images</label>
+            <input 
+                type="file" 
+                class="form-control" 
+                id="images" 
+                name="images" 
+                multiple 
+                accept="image/*"
+            >
+            <div class="form-text">
+                Upload up to 5 images (JPEG, PNG only, max 5MB each)
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-plus-circle me-2"></i> Create Listing
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Client-side Validation -->
+<script>
+(() => {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
